@@ -7,7 +7,7 @@ import com.google.firebase.messaging.RemoteMessage
 import com.naarad.naaradsdk.models.NaaradRemoteMessage
 
 
-class NaaradMessagingService : FirebaseMessagingService() {
+open class NaaradMessagingService : FirebaseMessagingService() {
     private fun sendRegistrationToServer(token: String?) {
         // TODO: Send token to app server on miscellaneous calls to onNewToken
         Log.d(ContentValues.TAG, "sendRegistrationTokenToServer($token)")
@@ -25,7 +25,7 @@ class NaaradMessagingService : FirebaseMessagingService() {
         onPushNotificationReceived(naaradRemoteMessage)
     }
 
-    fun onPushNotificationReceived(remoteMessage: NaaradRemoteMessage) {
+    open fun onPushNotificationReceived(remoteMessage: NaaradRemoteMessage) {
         Log.d("Naarad notification", "Process notification by overriding this method")
     }
 }
