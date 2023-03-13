@@ -50,8 +50,7 @@ class Request(var context: Context) {
                 }
 
                 override fun parseNetworkResponse(response: NetworkResponse): Response<String> {
-                    var responseString = ""
-                    responseString = response.statusCode.toString()
+                    var responseString = response.statusCode.toString()
                     Log.i("Response data", response.data.toString())
                     callback(response)
                     return Response.success(

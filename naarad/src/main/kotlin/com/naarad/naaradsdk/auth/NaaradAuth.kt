@@ -7,6 +7,7 @@ import com.google.firebase.FirebaseOptions
 import com.naarad.naaradsdk.devicemanagement.DeviceRegisterer
 import com.naarad.naaradsdk.exceptions.InitialisationException
 import com.naarad.naaradsdk.helpers.NaaradApiHelper
+import com.naarad.naaradsdk.utils.Constants.NAARAD_PROJECT_ID
 
 
 class NaaradAuth(var context: Context, var dappName: String,
@@ -16,6 +17,13 @@ class NaaradAuth(var context: Context, var dappName: String,
     fun initialiseApp() {
         Log.i("Naarad SDK:", "Initialising Naarad...")
         NaaradApiHelper(context, apiKey).getAppData(dappName) { appData ->
+            if (appData.length() == 0) {
+                throw InitialisationException("A dapp with provided name does not exist. " +
+                        "Make sure your dApp is registered.")
+            }
+            if (!appData.has("firebase_data")) {
+                throw InitialisationException("Incomplete data received from Naarad API.")
+            }
             val applicationId = appData.getJSONObject("firebase_data")
                 .getString("app_id")
                 ?: throw InitialisationException("Application ID not returned by Naarad API.")
@@ -29,6 +37,7 @@ class NaaradAuth(var context: Context, var dappName: String,
         val firebaseOptions = FirebaseOptions.Builder()
             .setApplicationId(appId)
             .setApiKey(apiKey)
+            .setProjectId(NAARAD_PROJECT_ID)
             .build();
         try {
             FirebaseApp.initializeApp(context, firebaseOptions)

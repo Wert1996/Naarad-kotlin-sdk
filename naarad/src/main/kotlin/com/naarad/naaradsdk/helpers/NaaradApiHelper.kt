@@ -20,7 +20,6 @@ class NaaradApiHelper(context: Context, var apiKey: String) {
     fun getAppData(dappName: String, callback: (response: JSONObject) -> Unit) {
         val url = Constants.NAARAD_API_BASE_URL + "dapp?name=$dappName"
         Log.d("Naarad API", "Making get request at url: $url")
-        var response: JSONObject? = null;
         requestHelper.makeGETRequest(url, getHeadersForNaaradApi()) {
             callback(it)
         }
