@@ -4,8 +4,8 @@ import android.util.Log
 import com.google.firebase.messaging.RemoteMessage
 
 class NaaradRemoteMessage() {
-    private var messageData: MutableMap<String, String>? = null;
-    private var notificationBody: String? = "";
+    var messageData: MutableMap<String, String>? = null;
+    var notificationBody: String? = "";
 
     constructor(remoteMessage: RemoteMessage) : this() {
         // Check if message contains a data payload.
