@@ -7,7 +7,6 @@ import com.google.firebase.FirebaseOptions
 import com.naarad.naaradsdk.devicemanagement.DeviceRegisterer
 import com.naarad.naaradsdk.exceptions.InitialisationException
 import com.naarad.naaradsdk.helpers.NaaradApiHelper
-import com.naarad.naaradsdk.utils.Constants.NAARAD_PROJECT_ID
 
 
 class NaaradAuth(var context: Context, var dappName: String,
@@ -27,17 +26,23 @@ class NaaradAuth(var context: Context, var dappName: String,
             val applicationId = appData.getJSONObject("firebase_data")
                 .getString("app_id")
                 ?: throw InitialisationException("Application ID not returned by Naarad API.")
-            initialiseFirebase(applicationId)
+            val firebaseApiKey = appData.getJSONObject("firebase_data")
+                .getString("api_key")
+                ?: throw InitialisationException("Firebase API Key not returned by Naarad API.")
+            val projectId = appData.getJSONObject("firebase_data")
+                .getString("project_id")
+                ?: throw InitialisationException("Project ID not returned by Naarad API.")
+            initialiseFirebase(applicationId, projectId, firebaseApiKey)
             deviceRegisterer.registerDevice(walletAddress, dappName)
             Log.i("Naarad SDK:", "Successfully initialised.")
         }
     }
 
-    private fun initialiseFirebase(appId: String) {
+    private fun initialiseFirebase(appId: String, projectId: String, firebaseApiKey: String) {
         val firebaseOptions = FirebaseOptions.Builder()
             .setApplicationId(appId)
-            .setApiKey(apiKey)
-            .setProjectId(NAARAD_PROJECT_ID)
+            .setApiKey(firebaseApiKey)
+            .setProjectId(projectId)
             .build();
         try {
             FirebaseApp.initializeApp(context, firebaseOptions)

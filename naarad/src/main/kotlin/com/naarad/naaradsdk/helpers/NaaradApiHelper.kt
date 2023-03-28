@@ -13,12 +13,12 @@ class NaaradApiHelper(context: Context, var apiKey: String) {
 
     private fun getHeadersForNaaradApi() : MutableMap<String, String>{
         val headers = HashMap<String, String>()
-        headers["Authorization"] = apiKey
+        headers["Authorization"] = "Basic $apiKey"
         return headers
     }
 
     fun getAppData(dappName: String, callback: (response: JSONObject) -> Unit) {
-        val url = Constants.NAARAD_API_BASE_URL + "dapp?name=$dappName"
+        val url = Constants.NAARAD_API_BASE_URL + "dapp?name=$dappName&complete=True"
         Log.d("Naarad API", "Making get request at url: $url")
         requestHelper.makeGETRequest(url, getHeadersForNaaradApi()) {
             callback(it)

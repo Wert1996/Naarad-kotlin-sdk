@@ -30,7 +30,6 @@ class DeviceRegisterer(context: Context, var apiKey: String) {
     private fun createJsonObjectForRegistration(walletAddress: String, deviceToken: String,
                                                 dappName: String) : JSONObject{
         val jsonBody = JSONObject()
-        jsonBody.put("api_key", apiKey)
         jsonBody.put("wallet_address", walletAddress)
         jsonBody.put("device_token", deviceToken)
         jsonBody.put("dapp_name", dappName)
